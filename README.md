@@ -1,55 +1,26 @@
-# 🪆 Mui Nested Menu
+# Releasing
 
-## It's not perfect, but it's pretty good.
+Update the README.md file in the root then run the below from the root.
 
-This package provides components to let you nest menu items infinitely deep. The code is an adaption from [this package](material-ui-nested-menu-item) to work with [MUI version 5/6](https://mui.com).
+```sh
+yarn menu publish:minor
+# or
+yarn menu publish:patch
+# Check versions and stuff have updated
 
-[Check out the documentation here.](https://mui-nested-menu.vercel.app/)
+# Cause parcel sucks
+rm -rf **/.parcel-cache
+rm -rf **/node_modules
+yarn
 
-## 📦 Install
+yarn menu parcel build --no-optimize --no-source-maps --no-content-hash --target
 
-The code is [open source](https://github.com/webzep/mui-nested-menu), so you can use the library by copying the `src/mui-nested-menu` directory to your project (if you'd like to adapt the components) or by installing it via NPM.
+cd ./packages/mui-nested-menu
+yarn copy
 
+cd ./packages/mui-nested-menu/dist
+npm publish
+
+cd ..
+yarn set-package:dev
 ```
-$ npm install mui-nested-menu
-```
-
-## 🛠 Exports
-
-The following items and interfaces are exported from the package:
-
-- `NestedDropdown` - To create menu bar dropdowns.
-
-- `ContextMenu` - For a right-click menu.
-
-- `IconMenuItem` - A menu item which can take start and end icons.
-
-- `NestedMenuItem` - The actual nested menu component.
-
-- `nestedMenuItemsFromObject({(items, isOpen, handleClose)})` - Utility function which returns a list of menu items from a given array of items in the object format you see in the samples. You can then manually put this inside a `<Menu />` component.
-
-- `MenuItemData` - An interface for the `menuItemsData` prop.
-
-## 💻 Contributing
-
-Pull requests for [the project](https://github.com/webzep
-/mui-nested-menu) are more than welcome. Please make sure to stick to the coding style used throughout the project.
-
-1. Clone the project from GitHub - it is a monorepo.
-2. `yarn && yarn start` and you should see the docs on `localhost:1000`.
-3. Create a new branch
-4. Make your changes
-5. Open a pull request
-
-## 📝 Changelog
-
-Version | Breaking     | Changes
-------- | ------------ | ---------------------------------------------------------------------------------------------------------------------
-3.0.0   | no           | Support for ESM and CJS modules.
-3.1.0   | yes          | Make disabled ans SX props available. Fixes typo `nesteMenuItemsFromObjectProps` to `nestedMenuItemsFromObjectProps`.
-3.2.0   | no           | Provide event and item in callback.
-3.2.1   | no           | [@mui/material/styles/styled 4 level import fixed](https://github.com/webzep/mui-nested-menu/pull/32)
-3.2.2   | no           | Documentation updates
-3.4.0   | no           | Fixes disabled prop. Adds delay prop to NestedMenuItem.
-4.0.0   | probably not | Upgrade to mui 6.3.1.
-4.0.1   | probably not | Add React 19 to peer dependencies.
