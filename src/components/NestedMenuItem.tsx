@@ -1,23 +1,9 @@
-import Menu, { MenuProps } from '@mui/material/Menu';
-import { MenuItemProps } from '@mui/material/MenuItem';
-import {
-    ElementType,
-    FocusEvent,
-    forwardRef,
-    HTMLAttributes,
-    KeyboardEvent,
-    MouseEvent,
-    ReactNode,
-    RefAttributes,
-    useImperativeHandle,
-    useRef,
-    useState,
-} from 'react';
-
-import { ChevronRight } from '../icons/ChevronRight';
+import { ElementType, FocusEvent, forwardRef, HTMLAttributes, KeyboardEvent, MouseEvent, ReactNode, RefAttributes, useImperativeHandle, useRef, useState } from 'react';
+import { Box,Menu } from '@mui/material';
+import { ChevronRight } from '@mui/icons-material';
 import { IconMenuItem } from './IconMenuItem';
 
-export type NestedMenuItemProps = Omit<MenuItemProps, 'button'> & {
+export interface NestedMenuItemProps extends HTMLAttributes<HTMLElement> {
     parentMenuOpen: boolean;
     component?: ElementType;
     label?: string;
@@ -29,10 +15,8 @@ export type NestedMenuItemProps = Omit<MenuItemProps, 'button'> & {
     tabIndex?: number;
     disabled?: boolean;
     ContainerProps?: HTMLAttributes<HTMLElement> & RefAttributes<HTMLElement | null>;
-    MenuProps?: Partial<Omit<MenuProps, 'children'>>;
-    button?: true | undefined;
     delay?: number;
-};
+}
 
 const NestedMenuItem = forwardRef<HTMLLIElement | null, NestedMenuItemProps>(function NestedMenuItem(
     props,
@@ -48,23 +32,16 @@ const NestedMenuItem = forwardRef<HTMLLIElement | null, NestedMenuItemProps>(fun
         className,
         tabIndex: tabIndexProp,
         ContainerProps: ContainerPropsProp = {},
-        MenuProps,
         delay = 0,
-        ...MenuItemProps
     } = props;
 
     const { ref: containerRefProp, ...ContainerProps } = ContainerPropsProp;
-
     const menuItemRef = useRef<HTMLLIElement | null>(null);
     useImperativeHandle(ref, () => menuItemRef.current!); // eslint-disable-line @typescript-eslint/no-non-null-assertion
-
     const containerRef = useRef<HTMLDivElement | null>(null);
-    useImperativeHandle(containerRefProp, () => containerRef.current);
-
+    useImperativeHandle(containerRefProp, () => containerRef.current as HTMLElement); // eslint-disable-line @typescript-eslint/no-non-null-assertion
     const menuContainerRef = useRef<HTMLDivElement | null>(null);
-
     const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
     const [isSubMenuOpen, setIsSubMenuOpen] = useState(false);
 
     const handleMouseEnter = (e: MouseEvent<HTMLElement>) => {
@@ -72,7 +49,6 @@ const NestedMenuItem = forwardRef<HTMLLIElement | null, NestedMenuItemProps>(fun
             if (!props.disabled) {
                 setIsSubMenuOpen(true);
             }
-
             if (ContainerProps.onMouseEnter) {
                 ContainerProps.onMouseEnter(e);
             }
@@ -81,9 +57,7 @@ const NestedMenuItem = forwardRef<HTMLLIElement | null, NestedMenuItemProps>(fun
     
     const handleMouseLeave = (e: MouseEvent<HTMLElement>) => {
         timeoutRef.current && clearTimeout(timeoutRef.current);
-
         setIsSubMenuOpen(false);
-
         if (ContainerProps.onMouseLeave) {
             ContainerProps.onMouseLeave(e);
         }
@@ -100,7 +74,6 @@ const NestedMenuItem = forwardRef<HTMLLIElement | null, NestedMenuItemProps>(fun
                 return true;
             }
         }
-
         return false;
     };
 
@@ -108,7 +81,6 @@ const NestedMenuItem = forwardRef<HTMLLIElement | null, NestedMenuItemProps>(fun
         if (e.target === containerRef.current && !props.disabled) {
             setIsSubMenuOpen(true);
         }
-
         if (ContainerProps.onFocus) {
             ContainerProps.onFocus(e);
         }
@@ -118,17 +90,13 @@ const NestedMenuItem = forwardRef<HTMLLIElement | null, NestedMenuItemProps>(fun
         if (e.key === 'Escape') {
             return;
         }
-
         if (isSubmenuFocused()) {
             e.stopPropagation();
         }
-
         const active = containerRef.current?.ownerDocument.activeElement;
-
         if (e.key === 'ArrowLeft' && isSubmenuFocused()) {
             containerRef.current?.focus();
         }
-
         if (e.key === 'ArrowRight' && e.target === containerRef.current && e.target === active) {
             const firstChild = menuContainerRef.current?.children[0] as HTMLDivElement;
             firstChild?.focus();
@@ -144,7 +112,7 @@ const NestedMenuItem = forwardRef<HTMLLIElement | null, NestedMenuItemProps>(fun
     }
 
     return (
-        <div
+        <Box
             {...ContainerProps}
             ref={containerRef}
             onFocus={handleFocus}
@@ -154,7 +122,6 @@ const NestedMenuItem = forwardRef<HTMLLIElement | null, NestedMenuItemProps>(fun
             onKeyDown={handleKeyDown}
         >
             <IconMenuItem
-                MenuItemProps={MenuItemProps}
                 className={className}
                 ref={menuItemRef}
                 leftIcon={leftIcon}
@@ -183,13 +150,12 @@ const NestedMenuItem = forwardRef<HTMLLIElement | null, NestedMenuItemProps>(fun
                 onClose={() => {
                     setIsSubMenuOpen(false);
                 }}
-                {...MenuProps}
             >
-                <div ref={menuContainerRef} style={{ pointerEvents: 'auto' }}>
+                <Box ref={menuContainerRef} style={{ pointerEvents: 'auto' }}>
                     {children}
-                </div>
+                </Box>
             </Menu>
-        </div>
+        </Box>
     );
 });
 

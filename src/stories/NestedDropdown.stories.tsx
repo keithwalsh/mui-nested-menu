@@ -258,26 +258,23 @@ export const WithDisabledItems: Story = {
     },
 };
 
-export const CustomButtonProps: Story = {
+export const CustomButton: Story = {
     args: {
         menuItemsData: basicMenuData,
-        ButtonProps: {
-            variant: 'contained',
-            color: 'primary',
-        },
     },
 };
 
 export const MultipleDropdowns: Story = {
+    args: {},
     render: () => (
         <Box sx={{ display: 'flex', gap: 2 }}>
             <NestedDropdown
                 menuItemsData={{
                     label: 'File',
                     items: [
-                        { label: 'New', callback: fn() },
-                        { label: 'Open', callback: fn() },
-                        { label: 'Save', callback: fn() },
+                        { label: 'New', callback: handleCallback },
+                        { label: 'Open', callback: handleCallback },
+                        { label: 'Save', callback: handleCallback },
                     ],
                 }}
             />
@@ -285,9 +282,9 @@ export const MultipleDropdowns: Story = {
                 menuItemsData={{
                     label: 'Edit',
                     items: [
-                        { label: 'Cut', callback: fn() },
-                        { label: 'Copy', callback: fn() },
-                        { label: 'Paste', callback: fn() },
+                        { label: 'Cut', callback: handleCallback },
+                        { label: 'Copy', callback: handleCallback },
+                        { label: 'Paste', callback: handleCallback },
                     ],
                 }}
             />
@@ -295,9 +292,9 @@ export const MultipleDropdowns: Story = {
                 menuItemsData={{
                     label: 'View',
                     items: [
-                        { label: 'Zoom In', callback: fn() },
-                        { label: 'Zoom Out', callback: fn() },
-                        { label: 'Reset Zoom', callback: fn() },
+                        { label: 'Zoom In', callback: handleCallback },
+                        { label: 'Zoom Out', callback: handleCallback },
+                        { label: 'Reset Zoom', callback: handleCallback },
                     ],
                 }}
             />

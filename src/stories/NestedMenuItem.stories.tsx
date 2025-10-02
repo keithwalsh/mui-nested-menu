@@ -74,6 +74,9 @@ const MenuWrapper = ({ children }: { children: React.ReactNode }) => {
 };
 
 export const Basic: Story = {
+    args: {
+        parentMenuOpen: true,
+    },
     render: () => (
         <MenuWrapper>
             <IconMenuItem label="Regular Item" onClick={handleCallback} />
@@ -88,6 +91,9 @@ export const Basic: Story = {
 };
 
 export const WithIcons: Story = {
+    args: {
+        parentMenuOpen: true,
+    },
     render: () => (
         <MenuWrapper>
             <NestedMenuItem label="Home" leftIcon={<HomeIcon />} parentMenuOpen={true}>
@@ -104,6 +110,9 @@ export const WithIcons: Story = {
 };
 
 export const DeeplyNested: Story = {
+    args: {
+        parentMenuOpen: true,
+    },
     render: () => (
         <MenuWrapper>
             <NestedMenuItem label="Level 1" parentMenuOpen={true}>
@@ -124,6 +133,9 @@ export const DeeplyNested: Story = {
 };
 
 export const WithDelay: Story = {
+    args: {
+        parentMenuOpen: true,
+    },
     render: () => (
         <MenuWrapper>
             <IconMenuItem label="No Delay Item" onClick={handleCallback} />
@@ -147,6 +159,9 @@ export const WithDelay: Story = {
 };
 
 export const DisabledStates: Story = {
+    args: {
+        parentMenuOpen: true,
+    },
     render: () => (
         <MenuWrapper>
             <IconMenuItem label="Enabled Item" onClick={handleCallback} />
@@ -162,6 +177,9 @@ export const DisabledStates: Story = {
 };
 
 export const MixedContent: Story = {
+    args: {
+        parentMenuOpen: true,
+    },
     render: () => (
         <MenuWrapper>
             <IconMenuItem label="New File" leftIcon={<FolderIcon />} onClick={handleCallback} />
