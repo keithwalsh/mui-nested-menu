@@ -147,6 +147,8 @@ const MenuItemSubmenu = forwardRef<HTMLLIElement | null, MenuItemSubmenuProps>(f
                 autoFocus={false}
                 disableAutoFocus
                 disableEnforceFocus
+                keepMounted
+                transitionDuration={0}
                 onClose={() => {
                     setIsSubMenuOpen(false);
                 }}

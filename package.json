@@ -46,6 +46,7 @@
         "@mui/icons-material": "^7.3.3",
         "@mui/material": "7.3.3",
         "@mui/system": "7.3.3",
+        "material-ui-popup-state": "^5.3.6",
         "react": "19.1.0",
         "react-dom": "19.1.0"
     },

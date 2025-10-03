@@ -56,6 +56,8 @@ const nestedMenuConfig: MenuConfig[] = [
     {
         label: 'File',
         items: [
+            { kind: 'action', label: 'Open', action: handleAction('Open'), icon: <FileOpen />, shortcut: 'Ctrl+O' },
+            { kind: 'divider' },
             {
                 kind: 'submenu',
                 label: 'New',
@@ -66,8 +68,6 @@ const nestedMenuConfig: MenuConfig[] = [
                     { kind: 'action', label: 'From Template', action: handleAction('From Template') },
                 ],
             },
-            { kind: 'action', label: 'Open', action: handleAction('Open'), icon: <FileOpen />, shortcut: 'Ctrl+O' },
-            { kind: 'divider' },
             { kind: 'action', label: 'Save', action: handleAction('Save'), icon: <Save />, shortcut: 'Ctrl+S' },
         ],
     },
