@@ -1,9 +1,9 @@
 import { ElementType, FocusEvent, forwardRef, HTMLAttributes, KeyboardEvent, MouseEvent, ReactNode, RefAttributes, useImperativeHandle, useRef, useState } from 'react';
 import { Box,Menu } from '@mui/material';
 import { ChevronRight } from '@mui/icons-material';
-import { IconMenuItem } from './IconMenuItem';
+import { MenuItemAction } from './MenuItemAction';
 
-export interface NestedMenuItemProps extends HTMLAttributes<HTMLElement> {
+export interface MenuItemSubmenuProps extends HTMLAttributes<HTMLElement> {
     parentMenuOpen: boolean;
     component?: ElementType;
     label?: string;
@@ -18,7 +18,7 @@ export interface NestedMenuItemProps extends HTMLAttributes<HTMLElement> {
     delay?: number;
 }
 
-const NestedMenuItem = forwardRef<HTMLLIElement | null, NestedMenuItemProps>(function NestedMenuItem(
+const MenuItemSubmenu = forwardRef<HTMLLIElement | null, MenuItemSubmenuProps>(function MenuItemSubmenu(
     props,
     ref
 ) {
@@ -121,7 +121,7 @@ const NestedMenuItem = forwardRef<HTMLLIElement | null, NestedMenuItemProps>(fun
             onMouseLeave={handleMouseLeave}
             onKeyDown={handleKeyDown}
         >
-            <IconMenuItem
+            <MenuItemAction
                 className={className}
                 ref={menuItemRef}
                 leftIcon={leftIcon}
@@ -159,5 +159,5 @@ const NestedMenuItem = forwardRef<HTMLLIElement | null, NestedMenuItemProps>(fun
     );
 });
 
-NestedMenuItem.displayName = 'NestedMenuItem';
-export { NestedMenuItem };
+MenuItemSubmenu.displayName = 'MenuItemSubmenu';
+export { MenuItemSubmenu };
