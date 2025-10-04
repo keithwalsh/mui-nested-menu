@@ -8,6 +8,11 @@ import { MenuBar } from '../components/MenuBar';
 import { MenuConfig } from '../definitions';
 import { FileOpen, NoteAdd, Redo, Save, Undo } from '@mui/icons-material';
 
+// Helper function to create action handlers for menu items
+const handleAction = (actionName: string) => () => {
+    console.log(`Action triggered: ${actionName}`);
+};
+
 const meta = {
     title: 'Components/MenuBar',
     component: MenuBar,
@@ -24,8 +29,6 @@ const meta = {
 
 export default meta;
 type Story = StoryObj<typeof meta>;
-
-const handleAction = (action: string) => () => console.log(action);
 
 const nestedMenuConfig: MenuConfig[] = [
     {
@@ -62,7 +65,7 @@ const nestedMenuConfig: MenuConfig[] = [
     },
 ];
 
-export const WithNestedMenus: Story = {
+export const ComponentPreview: Story = {
     args: {
         menuConfig: nestedMenuConfig,
     },

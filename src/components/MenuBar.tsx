@@ -158,14 +158,12 @@ const MenuBar: React.FC<MenuBarProps> = ({ menuConfig, sx }) => {
 
     // Handle activation (first click on any menu button)
     const handleActivate = useCallback((menuId: string) => {
-        console.log('Activating menu:', menuId);
         setIsActive(true);
         setActiveMenuId(menuId);
     }, []);
 
     // Handle hover navigation (switch between menus when already active)
     const handleHoverNavigate = useCallback((menuId: string) => {
-        console.log('Hover navigate to:', menuId);
         setActiveMenuId(menuId);
     }, []);
 
