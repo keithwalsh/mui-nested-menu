@@ -4,14 +4,10 @@
  */
 
 import type { Meta, StoryObj } from '@storybook/react';
+import { action } from "storybook/actions";
 import { MenuBar } from '../components/MenuBar';
 import { MenuConfig } from '../definitions';
-import { FileOpen, NoteAdd, Redo, Save, Undo } from '@mui/icons-material';
-
-// Helper function to create action handlers for menu items
-const handleAction = (actionName: string) => () => {
-    console.log(`Action triggered: ${actionName}`);
-};
+import { ContentCopy, ContentPaste, ExitToApp, FileCopy, FileOpen, FolderOpen, NoteAdd, Redo, Save, Undo, Visibility, ZoomIn, ZoomOut } from '@mui/icons-material';
 
 const meta = {
     title: 'Components/MenuBar',
@@ -32,35 +28,39 @@ type Story = StoryObj<typeof meta>;
 
 const nestedMenuConfig: MenuConfig[] = [
     {
-        label: 'File',
+        label: "File",
         items: [
-            { kind: 'action', label: 'Open', action: handleAction('Open'), icon: <FileOpen />, shortcut: 'Ctrl+O' },
-            { kind: 'divider' },
-            {
-                kind: 'submenu',
-                label: 'New',
-                icon: <NoteAdd />,
-                items: [
-                    {
-                        kind: 'submenu',
-                        label: 'New',
-                        icon: <NoteAdd />,
-                        items: [
-                            { kind: 'action', label: 'Document', action: handleAction('New Document') },
-                            { kind: 'action', label: 'Folder', action: handleAction('New Folder') },
-                            { kind: 'action', label: 'From Template', action: handleAction('From Template') },
-                        ],
-                    },
-                ],
-            },
-            { kind: 'action', label: 'Save', action: handleAction('Save'), icon: <Save />, shortcut: 'Ctrl+S' },
+            { kind: "action", label: "Hello", action: action("New file"), icon: <FileCopy /> },
+            { kind: "action", label: "Open", action: action("Open file action triggered"), icon: <FolderOpen />, shortcut: "Ctrl+O", disabled: true },
+            { kind: "divider" },
+            { kind: "action", label: "Save", action: action("Save file"), icon: <Save />,  shortcut: "Ctrl+S" },
+            { kind: "action", label: "Exit", action: action("Exit application"), icon: <ExitToApp /> },
         ],
     },
     {
-        label: 'Edit',
+        label: "Edit",
         items: [
-            { kind: 'action', label: 'Undo', action: handleAction('Undo'), icon: <Undo />, shortcut: 'Ctrl+Z' },
-            { kind: 'action', label: 'Redo', action: handleAction('Redo'), icon: <Redo />, shortcut: 'Ctrl+Y' },
+            { kind: "action", label: "Undo", action: action("Undo"), icon: <Undo />, shortcut: "Ctrl+Z" },
+            { kind: "action", label: "Redo", action: action("Redo"), icon: <Redo />, shortcut: "Ctrl+Y" },
+            { kind: "divider" },
+            {
+                kind: "submenu",
+                label: "Other",
+                items: [
+                    { kind: "action", label: "Copy", action: action("Copy"), icon: <ContentCopy /> },
+                    { kind: "divider" },
+                    { kind: "action", label: "Paste", action: action("Paste"), icon: <ContentPaste /> },
+                ],
+            },
+        ],
+    },
+    {
+        label: "View",
+        items: [
+            { kind: "action", label: "Show/Hide Sidebar", action: action("Toggle Sidebar"), icon: <Visibility />, selected: true },
+            { kind: "divider" },
+            { kind: "action", label: "Zoom In", action: action("Zoom In"), icon: <ZoomIn />, shortcut: "Ctrl+Plus" },
+            { kind: "action", label: "Zoom Out", action: action("Zoom Out"), icon: <ZoomOut />, shortcut: "Ctrl+Minus" },
         ],
     },
 ];

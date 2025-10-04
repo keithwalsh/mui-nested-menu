@@ -1,9 +1,11 @@
 {
     "name": "mui-nested-menu",
-    "version": "4.0.1",
-    "description": "Infinitely deep nested menu items for MUI 5.",
+    "version": "1.5.7",
+    "description": "A React MenuBar component using Material-UI.",
     "keywords": [
-        "design",
+        "menu",
+        "nested",
+        "menubar",
         "material",
         "mui",
         "react",
@@ -11,58 +13,35 @@
     ],
     "homepage": "https://mui-nested-menu.vercel.app/",
     "bugs": {
-        "url": "https://github.com/webzep/mui-nested-menu/issues"
+        "url": "https://github.com/keithwalsh/mui-menubar/issues"
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/webzep/mui-nested-menu.git"
+        "url": "https://github.com/keithwalsh/mui-menubar.git"
     },
     "license": "MIT",
-    "author": "Steve Richardson",
+    "author": "Keith Walsh",
     "main": "dist/index.js",
     "module": "src/index.ts",
     "source": "./src/index.ts",
     "types": "src/index.ts",
     "scripts": {
-        "build:package": "npm run set-package:build && parcel build --no-optimize --no-source-maps --no-content-hash --target && npm run set-package:dev",
-        "clean": "rm -rf dist",
-        "copy": "cp ../../README.md ./dist/README.md && cp ../../LICENSE ./dist/LICENSE && cp ./package.template.json ./dist/package.json",
-        "dist": "npm run clean && npm run build:package && npm run copy",
-        "prepare": "npm run version:currentpackage",
-        "publish:major": "npm run prepare && npm version major && npm run dist && cd ./dist && npm publish  && cd ../../..",
-        "publish:minor": "npm run prepare && npm version minor && npm run dist && cd ./dist && npm publish  && cd ../../..",
-        "publish:patch": "npm run prepare && npm version patch && npm run dist && cd ./dist && npm publish  && cd ../../..",
-        "set-package:build": "npm pkg set module=dist/module.js && npm pkg set types=dist/index.d.ts",
-        "set-package:dev": "npm pkg set module=src/index.ts && npm pkg set types=src/index.ts",
-        "postversion": "npm run version:currenttemplate",
-        "version:currentpackage": "node scripts/version-sync.js",
-        "version:currenttemplate": "node scripts/version-template.js",
         "storybook": "storybook dev -p 6006",
         "build-storybook": "storybook build"
     },
     "dependencies": {
+        "@chromatic-com/storybook": "^4.1.1",
         "@emotion/react": "11.14.0",
         "@emotion/styled": "11.14.0",
-        "@mui/icons-material": "^7.3.3",
-        "@mui/material": "7.3.3",
-        "@mui/system": "7.3.3",
+        "@mui/icons-material": "^7.3.4",
+        "@mui/material": "7.3.4",
+        "@storybook/react-vite": "^9.1.10",
+        "@types/node": "^24.6.2",
         "react": "19.1.0",
         "react-dom": "19.1.0"
     },
     "devDependencies": {
-        "@chromatic-com/storybook": "^4.1.1",
-        "@storybook/addon-a11y": "^9.1.10",
         "@storybook/addon-docs": "^9.1.10",
-        "@storybook/addon-onboarding": "^9.1.10",
-        "@storybook/addon-vitest": "^9.1.10",
-        "@storybook/react-vite": "^9.1.10",
-        "@types/node": "^24.6.1",
-        "@vitest/browser": "^3.2.4",
-        "@vitest/coverage-v8": "^3.2.4",
-        "parcel": "2.13.3",
-        "playwright": "^1.55.1",
-        "storybook": "^9.1.10",
-        "typescript": "5.7.3",
-        "vitest": "^3.2.4"
+        "storybook": "^9.1.10"
     }
 }
