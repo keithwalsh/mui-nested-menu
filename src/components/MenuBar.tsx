@@ -1,9 +1,9 @@
 /**
- * @fileoverview Simplified horizontal menu bar component that renders multiple
- * menu buttons using MenuConfig structure with menu chaining support.
+ * @fileoverview Horizontal menu bar rendering menu buttons from MenuConfig,
+ * supporting menu chaining and activation logic.
  */
 
-import React, { useState, useCallback, useRef, useEffect } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Box, Button, Menu } from '@mui/material';
 import { MenuConfig } from '../definitions';
 import { renderMenuItem } from './renderMenuItems';
@@ -33,126 +33,122 @@ const MenuButton: React.FC<MenuButtonProps> = ({
     onDeactivate,
     onRegisterRef 
 }) => {
-    const menuId = menu.id ?? menu.label;
-    const buttonRef = useRef<HTMLButtonElement | null>(null);
-    const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-    const [isOpen, setIsOpen] = useState(false);
+  const menuId = menu.id ?? menu.label;
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
 
-    // Register button ref
-    useEffect(() => {
-        if (buttonRef.current) {
-            onRegisterRef(menuId, buttonRef.current);
-        }
-        return () => {
-            onRegisterRef(menuId, null);
-        };
-    }, [menuId, onRegisterRef]);
+  // Register button ref
+  useEffect(() => {
+    onRegisterRef(menuId, buttonRef.current);
+    return () => onRegisterRef(menuId, null);
+  }, [menuId, onRegisterRef]);
 
-    // Sync menu state with active menu id
-    useEffect(() => {
-        const isOpenByGroup = activeMenuId === menuId;
-        console.log(`[${menuId}] Sync effect - activeMenuId: ${activeMenuId}, isOpen: ${isOpen}, isOpenByGroup: ${isOpenByGroup}`);
-        if (isOpenByGroup && !isOpen) {
-            console.log(`[${menuId}] Opening menu`);
-            if (!anchorEl && buttonRef.current) {
-                setAnchorEl(buttonRef.current);
-            }
-            setIsOpen(true);
-        } else if (!isOpenByGroup && isOpen && (isActive || activeMenuId === null)) {
-            console.log(`[${menuId}] Closing menu`);
-            setIsOpen(false);
-        }
-    }, [activeMenuId, menuId, isOpen, isActive, anchorEl]);
-
-    // Deactivate when menu closes
-    const wasOpenRef = useRef<boolean>(false);
-    useEffect(() => {
-        const wasOpen = wasOpenRef.current;
-        const isOpenByGroup = activeMenuId === menuId;
-        if (wasOpen && !isOpen && isOpenByGroup) {
-            onDeactivate();
-        }
-        wasOpenRef.current = isOpen;
-    }, [isOpen, activeMenuId, menuId, onDeactivate]);
-
-    const handleClick = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
-        setAnchorEl(event.currentTarget);
-        onActivate(menuId);
-        if (!isOpen) setIsOpen(true);
-        else setIsOpen(false);
-    }, [menuId, isOpen, onActivate]);
-
-    const handleMouseEnter = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
-        console.log(`[${menuId}] Mouse enter - isActive:`, isActive);
-        if (!isActive) return;
-        console.log(`[${menuId}] Navigating to this menu`);
-        setAnchorEl(event.currentTarget);
-        onHoverNavigate(menuId);
-    }, [isActive, menuId, onHoverNavigate]);
-
-    const handleClose = useCallback(() => {
+  // Sync menu state with active menu id
+  useEffect(() => {
+    const shouldBeOpen = activeMenuId === menuId;
+    if (shouldBeOpen && !isOpen) {
+        setAnchorEl(buttonRef.current);
+        setIsOpen(true);
+    } else if (!shouldBeOpen && isOpen && (isActive || activeMenuId === null)) {
         setIsOpen(false);
-    }, []);
+    }
+  }, [activeMenuId, menuId, isOpen, isActive]);
 
-    return (
-        <React.Fragment key={menuId}>
-            <Button
-                ref={buttonRef}
-                onClick={handleClick}
-                onPointerEnter={handleMouseEnter as any}
-                disabled={menu.disabled}
-                sx={{
-                    textTransform: 'none',
-                    px: 1.25,
-                    py: 0.25,
-                    minWidth: 0,
-                    color: 'text.primary',
-                    backgroundColor: isOpen ? 'action.selected' : 'transparent',
-                    '&:hover': {
-                        backgroundColor: isOpen ? 'action.selected' : 'action.hover',
-                    },
-                }}
-            >
-                {menu.label}
-            </Button>
-            <Menu
-                anchorEl={anchorEl}
-                open={isOpen}
-                onClose={handleClose}
-                keepMounted
-                disableRestoreFocus
-                disableEnforceFocus
-                transitionDuration={0}
-                style={{ pointerEvents: 'none' }}
-                anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
-                }}
-                transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'left',
-                }}
-                sx={{
-                    m: 0,
-                    p: 0,
-                    '& .MuiList-root': {
-                        p: 0,
-                        m: 0,
-                    },
-                }}
-            >
-                <Box style={{ pointerEvents: 'auto' }}>
-                    {menu.items.map((item) =>
-                        renderMenuItem({ 
-                            item, 
-                            handleClose, 
-                            isOpen 
-                        })
-                    )}
-                </Box>
-            </Menu>
-        </React.Fragment>
-    );
+  // Deactivate when menu closes
+  const wasOpenRef = useRef<boolean>(false);
+  useEffect(() => {
+    const wasOpen = wasOpenRef.current;
+    const isOpenByGroup = activeMenuId === menuId;
+    if (wasOpen && !isOpen && isOpenByGroup) {
+      onDeactivate();
+    }
+    wasOpenRef.current = isOpen;
+  }, [isOpen, activeMenuId, menuId, onDeactivate]);
+
+  const handleClick = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      setAnchorEl(event.currentTarget);
+      onActivate(menuId);
+      if (!isOpen) setIsOpen(true);
+      else setIsOpen(false);
+    },
+    [menuId, isOpen, onActivate]
+  );
+
+  const handleMouseEnter = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      if (!isActive) return;
+      setAnchorEl(event.currentTarget);
+      onHoverNavigate(menuId);
+    },
+    [isActive, menuId, onHoverNavigate]
+  );
+
+  const handleClose = useCallback(() => {
+    setIsOpen(false);
+  }, []);
+
+  return (
+    <React.Fragment key={menuId}>
+      <Button
+        ref={buttonRef}
+        onClick={handleClick}
+        onPointerEnter={handleMouseEnter as any}
+        disabled={menu.disabled}
+        sx={{
+          textTransform: "none",
+          px: 1.25,
+          py: 0.25,
+          minWidth: 0,
+          color: "text.primary",
+          backgroundColor: isOpen ? "action.selected" : "transparent",
+          "&:hover": {
+            backgroundColor: isOpen ? "action.selected" : "action.hover",
+          },
+        }}
+      >
+        {menu.label}
+      </Button>
+      <Menu
+        anchorEl={anchorEl}
+        open={isOpen}
+        onClose={handleClose}
+        keepMounted
+        disableRestoreFocus
+        disableEnforceFocus
+        transitionDuration={0}
+        style={{ pointerEvents: "none" }}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}
+        sx={{
+          m: 0,
+          p: 0,
+          "& .MuiList-root": {
+            pt: 0.5,
+            pb: 0.5,
+            m: 0,
+          },
+        }}
+      >
+        <Box style={{ pointerEvents: "auto" }}>
+          {menu.items.map((item) =>
+            renderMenuItem({
+              item,
+              handleClose,
+              isOpen,
+            })
+          )}
+        </Box>
+      </Menu>
+    </React.Fragment>
+  );
 };
 
 const MenuBar: React.FC<MenuBarProps> = ({ menuConfig, sx }) => {

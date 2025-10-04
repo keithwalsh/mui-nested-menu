@@ -8,10 +8,9 @@ export interface MenuItemSubmenuProps extends HTMLAttributes<HTMLElement> {
     component?: ElementType;
     label?: string;
     renderLabel?: () => ReactNode;
-    rightIcon?: ReactNode;
+    rightIcon?: ReactNode; // for submenu chevron
     leftIcon?: ReactNode;
     children?: ReactNode;
-    className?: string;
     tabIndex?: number;
     disabled?: boolean;
     ContainerProps?: HTMLAttributes<HTMLElement> & RefAttributes<HTMLElement | null>;
@@ -120,14 +119,15 @@ const MenuItemSubmenu = forwardRef<HTMLLIElement | null, MenuItemSubmenuProps>(f
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             onKeyDown={handleKeyDown}
+            sx={{ m: 0.5 }}
         >
             <MenuItemAction
-                className={className}
                 ref={menuItemRef}
                 leftIcon={leftIcon}
                 rightIcon={rightIcon}
                 label={label}
                 renderLabel={renderLabel}
+                sx={{ m: 0 }}
             />
 
             <Menu
@@ -149,6 +149,21 @@ const MenuItemSubmenu = forwardRef<HTMLLIElement | null, MenuItemSubmenuProps>(f
                 disableEnforceFocus
                 keepMounted
                 transitionDuration={0}
+                sx={{
+                    m: 0,
+                    p: 0,
+                    '& .MuiList-root': {
+                        p: 0,
+                        m: 0,
+                    },
+                }}
+                slotProps={{
+                    paper: {
+                        sx: {
+                            mt: 0.5,
+                        },
+                    },
+                }}
                 onClose={() => {
                     setIsSubMenuOpen(false);
                 }}

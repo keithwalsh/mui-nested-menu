@@ -4,23 +4,23 @@
  */
 
 import React, { forwardRef, RefObject } from 'react';
-import { MenuItem, Typography, ListItemIcon, ListItemText, alpha } from '@mui/material';
+import { MenuItem, Typography, ListItemIcon, ListItemText, alpha, SxProps, Theme } from '@mui/material';
 
 interface MenuItemActionProps {
-    className?: string;
     disabled?: boolean;
     label?: string;
     renderLabel?: () => React.ReactNode;
     leftIcon?: React.ReactNode;
     onClick?: (event: React.MouseEvent<HTMLElement>) => void;
     ref?: RefObject<HTMLLIElement>;
-    rightIcon?: React.ReactNode;
+    rightIcon?: React.ReactNode; // for submenu chevron
     shortcut?: string;
     selected?: boolean;
+    sx?: SxProps<Theme>;
 }
 
 export const MenuItemAction = forwardRef<HTMLLIElement, MenuItemActionProps>(function MenuItemAction(
-    { className, label, leftIcon, renderLabel, rightIcon, shortcut, selected, ...props },
+    { label, leftIcon, renderLabel, rightIcon, shortcut, selected, sx, ...props },
     ref
 ) {
     return (
@@ -29,9 +29,9 @@ export const MenuItemAction = forwardRef<HTMLLIElement, MenuItemActionProps>(fun
           ref={ref}
           sx={{
             m: 0.5,
-            py: 0
+            py: 0,
+            ...sx
           }}
-          className={className}
           selected={selected}
           {...props}>
           {leftIcon && (
