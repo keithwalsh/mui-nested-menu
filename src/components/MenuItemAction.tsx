@@ -4,7 +4,9 @@
  */
 
 import React, { forwardRef, RefObject } from 'react';
-import { MenuItem, Typography, ListItemIcon, ListItemText, alpha, SxProps, Theme } from '@mui/material';
+import { MenuItem, Typography, ListItemIcon, ListItemText, SxProps, Theme } from '@mui/material';
+import { getIconStyles, getLabelTextStyles, getShortcutTextStyles } from '../utils/themeUtils';
+import { MENU_SX_STYLES } from '../constants';
 
 interface MenuItemActionProps {
     disabled?: boolean;
@@ -28,22 +30,13 @@ export const MenuItemAction = forwardRef<HTMLLIElement, MenuItemActionProps>(fun
           dense
           ref={ref}
           sx={{
-            m: 0.5,
-            py: 0,
+            ...MENU_SX_STYLES.menuItem,
             ...sx
           }}
           selected={selected}
           {...props}>
           {leftIcon && (
-              <ListItemIcon
-                sx={{
-                  color: (theme) => alpha(theme.palette.text.primary, 0.7),
-	              ml: -0.5,
-	              "& .MuiSvgIcon-root": {
-                    fontSize: "small"
-                  }
-                }}
-              >
+              <ListItemIcon sx={getIconStyles}>
                   {leftIcon}
               </ListItemIcon>
           )}
@@ -51,9 +44,7 @@ export const MenuItemAction = forwardRef<HTMLLIElement, MenuItemActionProps>(fun
               <ListItemText>
                   <Typography
                     variant="body2"
-                    sx={{
-                      color: (theme: any) => alpha(theme.palette.text.secondary, 0.9)
-                    }}
+                    sx={getLabelTextStyles}
                   >
                     {label}
                   </Typography>
@@ -62,12 +53,7 @@ export const MenuItemAction = forwardRef<HTMLLIElement, MenuItemActionProps>(fun
           {shortcut && (
               <Typography
                 variant="body2"
-                sx={{
-                  ml: 'auto', 
-                  pl: 4, 
-                  color: (theme: any) => alpha(theme.palette.text.secondary, 0.6), 
-                  fontSize: '0.86rem'
-                }}
+                sx={getShortcutTextStyles}
               >
                   {shortcut}
               </Typography>
