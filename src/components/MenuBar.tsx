@@ -4,9 +4,11 @@
  */
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Box, Button, Menu } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { MenuConfig } from '../definitions';
 import { renderMenuItem } from './renderMenuItems';
+import { MenuWrapper } from './MenuWrapper';
+import { BUTTON_STYLES, MENU_ORIGINS } from '../constants';
 
 export interface MenuBarProps {
     menuConfig: MenuConfig[];
@@ -97,11 +99,7 @@ const MenuButton: React.FC<MenuButtonProps> = ({
         onPointerEnter={handleMouseEnter as any}
         disabled={menu.disabled}
         sx={{
-          textTransform: "none",
-          px: 1.25,
-          py: 0.25,
-          minWidth: 0,
-          color: "text.primary",
+          ...BUTTON_STYLES.menuButton,
           backgroundColor: isOpen ? "action.selected" : "transparent",
           "&:hover": {
             backgroundColor: isOpen ? "action.selected" : "action.hover",
@@ -110,43 +108,23 @@ const MenuButton: React.FC<MenuButtonProps> = ({
       >
         {menu.label}
       </Button>
-      <Menu
+      <MenuWrapper
         anchorEl={anchorEl}
         open={isOpen}
         onClose={handleClose}
-        keepMounted
         disableRestoreFocus
         disableEnforceFocus
-        transitionDuration={0}
-        style={{ pointerEvents: "none" }}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "left",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "left",
-        }}
-        sx={{
-          m: 0,
-          p: 0,
-          "& .MuiList-root": {
-            pt: 0.5,
-            pb: 0.5,
-            m: 0,
-          },
-        }}
+        variant="topLevel"
+        {...MENU_ORIGINS.TOP_MENU}
       >
-        <Box style={{ pointerEvents: "auto" }}>
-          {menu.items.map((item) =>
-            renderMenuItem({
-              item,
-              handleClose,
-              isOpen,
-            })
-          )}
-        </Box>
-      </Menu>
+        {menu.items.map((item) =>
+          renderMenuItem({
+            item,
+            handleClose,
+            isOpen,
+          })
+        )}
+      </MenuWrapper>
     </React.Fragment>
   );
 };

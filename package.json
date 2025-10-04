@@ -20,9 +20,9 @@
     "license": "MIT",
     "author": "Steve Richardson",
     "main": "dist/index.js",
-    "module": "src/index.ts",
+    "module": "dist/module.js",
     "source": "./src/index.ts",
-    "types": "src/index.ts",
+    "types": "dist/index.d.ts",
     "scripts": {
         "build:package": "npm run set-package:build && parcel build --no-optimize --no-source-maps --no-content-hash --target && npm run set-package:dev",
         "clean": "rm -rf dist",

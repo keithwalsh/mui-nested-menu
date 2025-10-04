@@ -8,6 +8,7 @@ import { Divider } from '@mui/material';
 import { MenuItems } from '../definitions';
 import { MenuItemAction } from './MenuItemAction';
 import { MenuItemSubmenu } from './MenuItemSubmenu';
+import { generateDividerKey, generateSubmenuKey, generateActionKey } from '../utils/keyUtils';
 
 export interface RenderMenuItemOptions {
     item: MenuItems;
@@ -16,12 +17,10 @@ export interface RenderMenuItemOptions {
 }
 
 export function renderMenuItem({ item, handleClose, isOpen }: RenderMenuItemOptions): React.ReactNode {
-    const key = (item as any).id ?? (item as any).label ?? Math.random();
-
     if (item.kind === "divider") {
         return (
             <Divider
-              key={`divider-${key}`}
+              key={generateDividerKey(item)}
               component="li"
               sx={{
                 my: '0 !important',
@@ -33,7 +32,7 @@ export function renderMenuItem({ item, handleClose, isOpen }: RenderMenuItemOpti
     if (item.kind === "submenu") {
         return (
             <MenuItemSubmenu
-                key={`submenu-${key}`}
+                key={generateSubmenuKey(item)}
                 label={item.label}
                 leftIcon={item.icon}
                 parentMenuOpen={isOpen}
@@ -53,7 +52,7 @@ export function renderMenuItem({ item, handleClose, isOpen }: RenderMenuItemOpti
     if (item.kind === "action") {
         return (
             <MenuItemAction
-                key={`action-${key}`}
+                key={generateActionKey(item)}
                 label={item.label}
                 leftIcon={item.icon}
                 shortcut={item.shortcut}

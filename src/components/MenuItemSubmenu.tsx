@@ -1,7 +1,9 @@
 import { ElementType, FocusEvent, forwardRef, HTMLAttributes, KeyboardEvent, MouseEvent, ReactNode, RefAttributes, useImperativeHandle, useRef, useState } from 'react';
-import { Box,Menu } from '@mui/material';
+import { Box } from '@mui/material';
 import { ChevronRight } from '@mui/icons-material';
 import { MenuItemAction } from './MenuItemAction';
+import { MenuWrapper } from './MenuWrapper';
+import { MENU_SX_STYLES, MENU_ORIGINS } from '../constants';
 
 export interface MenuItemSubmenuProps extends HTMLAttributes<HTMLElement> {
     parentMenuOpen: boolean;
@@ -119,7 +121,7 @@ const MenuItemSubmenu = forwardRef<HTMLLIElement | null, MenuItemSubmenuProps>(f
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             onKeyDown={handleKeyDown}
-            sx={{ m: 0.5 }}
+            sx={MENU_SX_STYLES.submenuItem}
         >
             <MenuItemAction
                 ref={menuItemRef}
@@ -127,51 +129,27 @@ const MenuItemSubmenu = forwardRef<HTMLLIElement | null, MenuItemSubmenuProps>(f
                 rightIcon={rightIcon}
                 label={label}
                 renderLabel={renderLabel}
-                sx={{ m: 0 }}
+                sx={MENU_SX_STYLES.submenuItemInner}
             />
 
-            <Menu
+            <MenuWrapper
                 // Set pointer events to 'none' to prevent the invisible Popover div
                 // from capturing events for clicks and hovers
-                style={{ pointerEvents: 'none' }}
                 anchorEl={menuItemRef.current}
-                anchorOrigin={{
-                    horizontal: 'right',
-                    vertical: 'top',
-                }}
-                transformOrigin={{
-                    horizontal: 'left',
-                    vertical: 'top',
-                }}
                 open={open}
                 autoFocus={false}
                 disableAutoFocus
                 disableEnforceFocus
-                keepMounted
-                transitionDuration={0}
-                sx={{
-                    m: 0,
-                    p: 0,
-                    '& .MuiList-root': {
-                        p: 0,
-                        m: 0,
-                    },
-                }}
-                slotProps={{
-                    paper: {
-                        sx: {
-                            mt: 0.5,
-                        },
-                    },
-                }}
+                variant="submenu"
+                {...MENU_ORIGINS.SUBMENU}
                 onClose={() => {
                     setIsSubMenuOpen(false);
                 }}
             >
-                <Box ref={menuContainerRef} style={{ pointerEvents: 'auto' }}>
+                <Box ref={menuContainerRef}>
                     {children}
                 </Box>
-            </Menu>
+            </MenuWrapper>
         </Box>
     );
 });
